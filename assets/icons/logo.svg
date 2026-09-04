@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" class="brand-logo-svg">
+  <defs>
+    <linearGradient id="lvGradPrimary" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00D2FF" />
+      <stop offset="50%" stop-color="#0077B6" />
+      <stop offset="100%" stop-color="#023E8A" />
+    </linearGradient>
+    <linearGradient id="lvGradAccent" x1="12" y1="12" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38EF7D" />
+      <stop offset="100%" stop-color="#11998E" />
+    </linearGradient>
+    <linearGradient id="lvGradGold" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#0077B6" flood-opacity="0.3" />
+    </filter>
+  </defs>
+  <!-- Modern Hexagonal / Prism Badge -->
+  <rect x="3" y="3" width="42" height="42" rx="12" fill="#0B132B" stroke="url(#lvGradPrimary)" stroke-width="2" />
+  <!-- Leading Vue dynamic geometry: L and V interlaced with perspective view -->
+  <path d="M14 14V32C14 33.1 14.9 34 16 34H26" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M22 18L28 32C28.4 33 29.8 33 30.2 32L36 18" stroke="url(#lvGradPrimary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Ascending Horizon / Vue Beacon -->
+  <circle cx="34" cy="14" r="2.5" fill="#38EF7D" filter="url(#glow)" />
+</svg>
