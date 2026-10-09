@@ -88,7 +88,7 @@ Because this is a pure static website with no external dependencies, you can pre
 
 ## Firebase Hosting Deployment
 
-The Firebase project is `leading-vue---website`. The GitHub Actions workflow in `.github/workflows/firebase-hosting-merge.yml` deploys the static site to Firebase Hosting on pushes to `main` (or when started manually). Pull requests from branches in this repository receive a Firebase preview deployment. The GitHub Pages workflow remains enabled in `.github/workflows/deploy.yml` during the transition, so pushes continue updating the existing site as well.
+The Firebase project is `leading-vue---website`. The GitHub Actions workflow in `.github/workflows/firebase-hosting-merge.yml` deploys the static site to Firebase Hosting on pushes to `main` (or when started manually). Pull requests from branches in this repository receive a Firebase preview deployment. The site is no longer deployed to GitHub Pages.
 
 The workflows require the GitHub repository secret `FIREBASE_SERVICE_ACCOUNT_LEADING_VUE___WEBSITE`, containing a service account credential authorized to deploy to this Firebase project. The project ID and hosting configuration are stored in `.firebaserc` and `firebase.json`.
 
@@ -96,9 +96,9 @@ The workflows require the GitHub repository secret `FIREBASE_SERVICE_ACCOUNT_LEA
 
 1. In the Firebase console, open the `leading-vue---website` project and go to **Hosting** > **Add custom domain**.
 2. Add `leadingvue.com` (and `www.leadingvue.com` if both hostnames should work). Complete the ownership verification and DNS records exactly as Firebase displays them.
-3. Leave GitHub Pages enabled and keep its deployment workflow running while Firebase verifies the domain and provisions its SSL certificate. Do not change the live DNS records until Firebase says the domain is ready.
-4. When ready to cut over, update DNS to the exact records Firebase specifies. DNS changes can take time to propagate; during propagation, some visitors may still reach GitHub Pages while others reach Firebase. Both deployments remain enabled during this period.
-5. Confirm `https://leadingvue.com` is serving the Firebase site over HTTPS before disabling GitHub Pages or removing its deployment workflow. Until then, the existing GitHub Pages site remains available at its GitHub Pages URL, and pushes continue updating it.
+3. Wait for Firebase to verify the domain and provision its SSL certificate.
+4. Update DNS to the exact records Firebase specifies (the old GitHub Pages `185.199.x.153` A records must be removed).
+5. Confirm `https://leadingvue.com` is served by Firebase over HTTPS.
 
 ---
 
