@@ -32,8 +32,8 @@ Leading Vue, LLC provides strategic business advisory and asset management solut
 - **Direct Inquiry Routing**: Clicking "Inquire" on any service automatically scrolls to and pre-selects that service in the contact form.
 - **Client-Side Form Handling**: Validates input fields and connects inquiries directly to `sales@leadingvue.com` with pre-formatted email dispatch and one-click clipboard copying.
 - **Interactive FAQ Accordion**: Smoothly expands/collapses answers to common client questions with keyboard accessibility.
-- **Automated GitHub Actions CI/CD**: Seamless deployment to GitHub Pages on every push to the `main` branch.
-- **Custom Domain Ready**: Pre-configured `CNAME` file pointing to `leadingvue.com` with `.nojekyll` enabled.
+- **Automated Firebase Hosting deployment**: GitHub Actions deploys the site to Firebase Hosting when changes are pushed to `main`, with preview deployments for pull requests.
+- **Custom domain**: `leadingvue.com` can be connected to Firebase Hosting from the Firebase console.
 
 ---
 
@@ -43,7 +43,8 @@ Leading Vue, LLC provides strategic business advisory and asset management solut
 Leading-View-Website/
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml          # GitHub Actions workflow for automated Pages deployment
+│       ├── firebase-hosting-merge.yml         # Deploys main to Firebase Hosting
+│       └── firebase-hosting-pull-request.yml  # Creates Firebase preview deployments
 ├── assets/
 │   ├── icons/                  # High-quality SVG icons for services & branding
 │   │   ├── logo.svg            # Brand logo
@@ -61,9 +62,9 @@ Leading-View-Website/
 │   └── style.css               # Modern corporate styling, design tokens, and media queries
 ├── js/
 │   └── main.js                 # Mobile drawer, FAQ accordion, tabs, form validation
-├── CNAME                       # Domain routing for leadingvue.com
-├── .nojekyll                   # Bypasses Jekyll processing on GitHub Pages
 ├── index.html                  # Main semantic HTML5 webpage with Schema.org JSON-LD
+├── firebase.json               # Firebase Hosting configuration
+├── .firebaserc                 # Default Firebase project
 └── README.md                   # Project documentation
 ```
 
@@ -79,37 +80,25 @@ Because this is a pure static website with no external dependencies, you can pre
 2. **Using Any Local HTTP Server**:
    - If you have Python: `python -m http.server 8000`
    - If you have VS Code: Click **Go Live** with the *Live Server* extension.
+3. **Using the Firebase Hosting emulator**:
+   - Run `npx -y firebase-tools@latest emulators:start --only hosting`
+   - Open `http://localhost:5000`.
 
 ---
 
-## GitHub Pages Deployment Setup
+## Firebase Hosting Deployment
 
-This repository is already configured with an automated deployment workflow in `.github/workflows/deploy.yml`.
+The Firebase project is `leading-vue---website`. The GitHub Actions workflow in `.github/workflows/firebase-hosting-merge.yml` deploys the static site to Firebase Hosting on pushes to `main` (or when started manually). Pull requests from branches in this repository receive a Firebase preview deployment. The GitHub Pages workflow remains enabled in `.github/workflows/deploy.yml` during the transition, so pushes continue updating the existing site as well.
 
-To activate GitHub Pages for your repository:
+The workflows require the GitHub repository secret `FIREBASE_SERVICE_ACCOUNT_LEADING_VUE___WEBSITE`, containing a service account credential authorized to deploy to this Firebase project. The project ID and hosting configuration are stored in `.firebaserc` and `firebase.json`.
 
-1. Go to your GitHub repository: [Leading-Vue-LLC/Leading-View-Website](https://github.com/Leading-Vue-LLC/Leading-View-Website).
-2. Click **Settings** > **Pages** (in the left sidebar).
-3. Under **Build and deployment** > **Source**, select **GitHub Actions**.
-4. Push your changes to the `main` branch. The action will build and deploy the site automatically!
+### Connecting `leadingvue.com`
 
-### Custom Domain DNS Configuration (`leadingvue.com`)
-
-To link `leadingvue.com` to GitHub Pages:
-
-1. At your domain registrar (e.g., GoDaddy, Namecheap, Cloudflare, Google Domains):
-   - Configure four **A Records** for the apex domain (`@` or `leadingvue.com`) pointing to GitHub's IPs:
-     ```
-     185.199.108.153
-     185.199.109.153
-     185.199.110.153
-     185.199.111.153
-     ```
-   - Configure a **CNAME Record** for `www` pointing to:
-     ```
-     Leading-Vue-LLC.github.io
-     ```
-2. In GitHub repository **Settings > Pages > Custom domain**, ensure `leadingvue.com` is listed and check **Enforce HTTPS** once DNS propagates.
+1. In the Firebase console, open the `leading-vue---website` project and go to **Hosting** > **Add custom domain**.
+2. Add `leadingvue.com` (and `www.leadingvue.com` if both hostnames should work). Complete the ownership verification and DNS records exactly as Firebase displays them.
+3. Leave GitHub Pages enabled and keep its deployment workflow running while Firebase verifies the domain and provisions its SSL certificate. Do not change the live DNS records until Firebase says the domain is ready.
+4. When ready to cut over, update DNS to the exact records Firebase specifies. DNS changes can take time to propagate; during propagation, some visitors may still reach GitHub Pages while others reach Firebase. Both deployments remain enabled during this period.
+5. Confirm `https://leadingvue.com` is serving the Firebase site over HTTPS before disabling GitHub Pages or removing its deployment workflow. Until then, the existing GitHub Pages site remains available at its GitHub Pages URL, and pushes continue updating it.
 
 ---
 
